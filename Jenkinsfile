@@ -20,7 +20,21 @@ pipeline {
     				}    			
     		}
     	}
-    
+    	stage('SonarQube analysis') {
+					environment {
+  				scannerHome = "C:\\Users\\dotun\\Documents\\development\\jenkins\\tools\\hudson.plugins.sonar.SonarRunnerInstallation\\sonar\\bin"
+			}
+		steps {
+			script {
+    // requires SonarQube Scanner 2.8+
+    // def scannerHome = tool 'sonar';
+    withSonarQubeEnv {
+	    // bat "echo %scannerHome%"
+      bat "%scannerHome%\\sonar-scanner.bat && set"
+    }
+    }
+    }
+  }
     	stage('Build') {				
 			// build steps here
 			environment {
@@ -58,25 +72,7 @@ pipeline {
 			}
 		}
 		
-		stage('Publish Artifact') {
-			steps {
-				// input id: 'TargetEnv', message: 'publish artifact?', ok: 'yes', parameters: [choice(choices: ['snapshot', 'release'], description: 'choose binary type', name: 'binary')], submitter: 'admin'
-				script {				
-					def userInput = input(
-						// id: 'TargetEnv', message: 'publish artifact?', ok: 'yes', parameters: [choice(choices: ['snapshot', 'release'], description: 'choose binary type', name: 'binary')], submitter: 'admin'
-						// id: 'TargetEnv', message: 'publish artifact?', ok: 'yes', parameters: [choice(choices: ['snapshot', 'release'], description: 'choose binary type', name: 'binary'), choice(choices: ['eastern', 'pacific'], description: 'choose timezone', name: 'timezone')], submitter: 'admin'
-					id: 'TargetEnv', message: 'publish artifact?', ok: 'yes', parameters: [choice(choices: ['snapshot', 'release'], description: 'choose binary type', name: 'binary'), choice(choices: ['eastern', 'pacific'], description: 'choose timezone', name: 'timezone'), string(defaultValue: 'Dev', description: 'enter property set', name: 'propset', trim: true)], submitter: 'admin'
-					)
-					// echo ("Env: "+userInput['binary'])
-					// echo ("Env: "+userInput)
-					echo "artifact type is ${userInput['binary']}"
-					echo "deployment timezone is ${userInput['timezone']}"
-					echo "property set for binary is ${userInput['propset']}"
-				}				
-			}
-		}
-		
-		stage ('Deploy') {
+		stage (Deploy) {
 			steps {
 				script {
 					echo "deploying ${repositoryname} to tomcat server in the cloud"
