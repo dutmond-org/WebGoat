@@ -54,7 +54,7 @@ pipeline {
 				  else if (env.BRANCH_NAME.startsWith('release') || env.BRANCH_NAME == 'master' ) {
 				  	echo "Running a release build from branch ${env.BRANCH_NAME} on repository ${repositoryname}"
 					// sh 'mvn install'
-					bat "%mvnHome%\\mvn install -e"
+					bat "%mvnHome%\\mvn clean install -e"
 				  }
 				  
 				  else {				  
