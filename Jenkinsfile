@@ -22,8 +22,10 @@ pipeline {
     	}
     	stage('SonarQube analysis') {
 					environment {
-  				scannerHome = "C:\\Users\\dotun\\Documents\\development\\jenkins\\tools\\hudson.plugins.sonar.SonarRunnerInstallation\\sonar\\bin"
-			}
+  				// scannerHome = "C:\\Users\\dotun\\Documents\\development\\jenkins\\tools\\hudson.plugins.sonar.SonarRunnerInstallation\\sonar\\bin"
+			scannerHome = "/c/Users/dotun/Documents/development/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/sonar/bin"
+
+					}
 		steps {
 			script {
     // requires SonarQube Scanner 2.8+
