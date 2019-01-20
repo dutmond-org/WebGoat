@@ -22,8 +22,12 @@ pipeline {
     	}
     	stage('SonarQube analysis') {
 environment {
-  scannerHome = "/c/Users/dotun/Documents/development/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/sonar/bin"
+  sonar.java.binaries = "**/target/classes"
+  sonar.sources = "."
+  sonar.projectKey = "${repositoryname}"
+  scannerHome = "C:\\Users\\dotun\\Documents\\development\\jenkins\\tools\\hudson.plugins.sonar.SonarRunnerInstallation\\sonar\\bin"
 }
+
 		steps {
 			script {
     // requires SonarQube Scanner 2.8+
@@ -31,7 +35,8 @@ environment {
     withSonarQubeEnv {
 	    // bat "echo %scannerHome%"
       // bat "%scannerHome%\\sonar-scanner.bat -Dsonar.java.binaries=**/target/classes -Dsonar.sources=./src -Dsonar.projectKey=%repositoryname% && set"
-	    sh "${scannerHome}/sonar-scanner -Dsonar.java.binaries=**/target/classes -Dsonar.sources=. -Dsonar.projectKey=${repositoryname}"
+	    // sh "${scannerHome}/sonar-scanner -Dsonar.java.binaries=**/target/classes -Dsonar.sources=. -Dsonar.projectKey=${repositoryname}"
+    	bat "%scannerHome%\\sonar-scanner.bat"
     }
     }
     }
